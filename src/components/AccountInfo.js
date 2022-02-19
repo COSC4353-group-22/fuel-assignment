@@ -55,13 +55,6 @@ export default function AccountInfo() {
         />
         <TextField
           required
-          id="filled-required"
-          label="Required"
-          placeholder="Address 1:"
-          helperText="Address 1:"
-        />
-        <TextField
-          required
           id="optional"
           label="Optional"
           placeholder="Address 2:"
@@ -73,6 +66,13 @@ export default function AccountInfo() {
           label="Required"
           placeholder="City:"
           helperText="City:"
+        />
+        <TextField
+          required
+          id="filled-required"
+          label="Required"
+          placeholder="Zipcode:"
+          helperText="Zipcode:"
         />
         <TextField
           required
