@@ -8,6 +8,8 @@ import Login from './components/Login';
 import Home from './components/Home';
 import ErrorPage from './components/ErrorPage';
 import Register from './components/Register';
+import QuoteHistory from './components/QuoteHistory';
+import FuelQuote from "./components/FuelQuote";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path="/register" element={<Register   />} />
         <Route path="/profile" element={<AccountInfo />} />
         <Route path="*" element={<ErrorPage />} />
+        <Route path="/history" element={<QuoteHistory />}></Route>
+        <Route path="/quote" element={<FuelQuote />}></Route>
       </Routes>
     </Router>
   );
