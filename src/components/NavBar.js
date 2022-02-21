@@ -13,6 +13,12 @@ function NavBar() {
             <li>
                 <Link to="/profile" className='nav-item'>Client Profile</Link>
             </li>
+            <li>
+                <Link to="/quote" className='nav-item'>Quote Form</Link>
+            </li>
+            <li>
+                <Link to="/history" className='nav-item'>Quote History</Link>
+            </li>
         </ul>
     );
 }
