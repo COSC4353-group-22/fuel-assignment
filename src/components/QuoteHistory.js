@@ -21,7 +21,7 @@ const QuoteHistory = () => {
         <body>
 		<div className="QuoteHistory">
 			<div className="content">
-            <p>QUOTE HISTORY</p>
+            <h2>QUOTE HISTORY</h2>
                 <table id = "history">
 					<thead className="thead-dark">
                             <tr>
