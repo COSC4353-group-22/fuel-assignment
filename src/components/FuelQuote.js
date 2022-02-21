@@ -17,7 +17,7 @@ function FuelQuote()  {
     }
 
     return (
-        <div className='Fuel Quote'>
+        <div className='Fuel-Quote'>
             <head>
                 <link rel="stylesheet" href="FuelQuote.css"></link>
             </head>
@@ -40,9 +40,8 @@ function FuelQuote()  {
                 </label>
                 <br />
                 <label>
-                    Total Price: <output name="total" for="g p" />
+                    Total Price: <output name="total" for="g p"> 0.0$ </output>
                 </label><br />
-                 <input type = "submit" />
             </form>
             </div>
     )
