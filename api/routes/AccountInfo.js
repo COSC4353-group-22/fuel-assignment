@@ -13,18 +13,6 @@ router.post('/', async (req, res) => {
         console.log("recieved profile info data"); 
         
         validate(profileInfo);
-        
-        //CODE FOR SENDING TO DATABASE ONCE IT IS IMPLEMENTED
-        /*const query = await pool.query(
-            `INSERT INTO quote (date, gallons, gallonPrice, total)
-            VALUES($1, $2, $3, $4)`, [
-                quote.date,
-                quote.gallons,
-                quote.gallonPrice,
-                quote.total
-            ]
-        );
-        res.send('Quote info is added to the database.');*/
 
     } catch (err) {
         console.error(err.message);
