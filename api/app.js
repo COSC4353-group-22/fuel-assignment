@@ -7,6 +7,8 @@ var cors = require("cors");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var loginRouter = require('./routes/Login');
+var registerRouter = require('./routes/Register');
 var testAPIRouter = require("./routes/testAPI");
 var QuoteHistoryRoute = require("./routes/QuoteHistory")
 var QuoteRouter = require("./routes/Quote")
@@ -26,12 +28,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/login', loginRouter);
+app.use("/register", registerRouter);
 app.use("/testAPI", testAPIRouter);
 app.use("/history", QuoteHistoryRoute);
 app.use("/quote", QuoteRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  const error = new HttpError("Route not found", 404);
   next(createError(404));
 });
 
