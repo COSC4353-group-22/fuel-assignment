@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button'
 import axios from "axios";
+import ProfileChecks from "../components/forms/ProfileChecks";
+import { isValidDateValue } from '@testing-library/user-event/dist/utils';
 
 // const states = [
 //   {
@@ -14,7 +16,15 @@ import axios from "axios";
 
 export default function AccountInfo() {
 
-  const [profile, setProfile] = useState({});
+  const [profile, setProfile] = useState({
+    "firstName":"",
+    "lastName":"",
+    "addressOne":"",
+    "addressTwo":"",
+    "City":"",
+    "Zipcode":"",
+    "State":"",
+  });
 
   // const [firstName, setFirstName] = useState('');
   // const [lastName, setLastName] = useState('');
@@ -140,9 +150,9 @@ export default function AccountInfo() {
 
   const handleSubmit = async(event) => {
     event.preventDefault();
-    console.log("Hit button")
     console.log(profile);
 
+    if (ProfileChecks.CheckEmpty(profile))
     await axios.post(`http://localhost:9000/AccountInfo`, profile).then((res) => {
         console.log("Profile data sent to server"); 
 }).catch((err) => {
