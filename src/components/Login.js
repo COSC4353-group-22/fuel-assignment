@@ -1,9 +1,10 @@
 import React from 'react';
 import LoginForm from './LoginForm';
+import Checks from "../components/forms/Checks";
 
 function Login() {
     const adminUser = {
-        username: "admin",
+        username: "administrator",
         password: "admin123"
     }
     const [user, setUser] = React.useState({username: "", password: ""});
@@ -11,12 +12,16 @@ function Login() {
 
     const Login = details => {
         console.log(details);
-        if (details.username === adminUser.username && details.password === adminUser.password) {
-            console.log("Login Successful");
-            setUser({
-                username: details.username,
-                password: details.password
-            });
+        if (Checks.checkLoginInput(details.username, details.password)) {
+            if (details.username === adminUser.username && details.password === adminUser.password) {
+                console.log("Login Successful");
+                setUser({
+                    username: details.username,
+                    password: details.password
+                });
+            } else {
+                setError("Username or Password does not exist");
+            }
         } else {
             setError("Invalid Username or Password");
         }

@@ -1,25 +1,51 @@
+import axios from "axios";
 import React from 'react'
+import { useState } from "react";
 
 function Register() {
-    const [user, setUser] = React.useState({name: "", password: ""});
-    const [error, setError] = React.useState("");
+    const [user, setUser] = useState({username: "", password: ""});
+    const [error, setError] = useState("");
+    const [data, setData] = useState(); 
 
     const Register = user => {
-        console.log(user);
         if (user.username != "" && user.password != "") {
-            console.log("Register Successful");
             setUser({
                 username: user.username,
                 password: user.password
             });
+            return true;
         } else {
             setError("Username or Password cannot be empty!");
+            return false;
         }
     }
 
-    const submitHandler = e => {
+    // const fetchUser = async () => {
+    //     await axios.get(`http://localhost:9000/register`).then((res) => {
+    //       setData(res.data.username);
+    //       setData(res.data.password)
+    //       console.log(res.data.username);
+    //       console.log(res.data.password);
+    //     }).catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
+    // fetchUser();
+
+    const submitHandler = async(e) => {
         e.preventDefault();
-        Register(user);
+        if (Register(user)){
+            await axios.post('http://localhost:9000/register', {
+                username: user.username, 
+                password: user.password
+            }).then((response) => {
+                console.log("Registration data sent to server");
+            });
+            console.log("Registering user:", user);
+        }
+        else {
+            console.log("Error:", error);
+        }
     }
 
     return (
