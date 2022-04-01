@@ -1,0 +1,15 @@
+CREATE TABLE quote (
+    ID SERIAL PRIMARY KEY,
+    gallons FLOAT(5),
+    date DATE,
+    address VARCHAR(60),
+    gallonPrice FLOAT(5),
+    total FLOAT(5)
+);
+
+INSERT INTO quote (gallons, date, address, gallonPrice, total) 
+VALUES (3, '2/22/22', '3034 Scenic Elm St', 1.57,  4.71),
+    (34, '4/25/21', '2020 Winding Way',  2.02,   68.68),
+    (44, '2/28/20', '9292 Clear Lake City Blvd',6.22, 111.96),
+    (12, '11/01/21', '8567 Fairmont St',  1.57,  157.0),
+    (100, '08/12/21', '1313 Cornelia St',  2.50, 150.0);
