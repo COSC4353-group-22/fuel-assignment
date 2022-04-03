@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require("cors");
+const db = require('./db/queries')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -36,6 +37,7 @@ app.use("/testAPI", testAPIRouter);
 app.use("/history", QuoteHistoryRoute);
 app.use("/quote", QuoteRouter);
 app.use("/AccountInfo", AccountRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
