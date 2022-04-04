@@ -152,7 +152,7 @@ export default function AccountInfo() {
     event.preventDefault();
     console.log(profile);
 
-    if (ProfileChecks.CheckEmpty(profile))
+    if (ProfileChecks.EmptyCheck(profile))
     await axios.post(`http://localhost:9000/AccountInfo`, profile).then((res) => {
         console.log("Profile data sent to server"); 
 }).catch((err) => {
@@ -165,8 +165,10 @@ export default function AccountInfo() {
   // }
 
 // Text Form Below
-  return (
 
+/*Front End*/
+return (
+      
     <Box
       component="form"
       sx={{
