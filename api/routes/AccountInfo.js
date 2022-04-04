@@ -15,20 +15,21 @@ router.post('/', async (req, res) => {
 
         if (validateIfEmpty(profileInfo)){
             const query = await pool.query(
-                `INSERT INTO clientinformation (First_Name, Last_Name,
+                `INSERT INTO clientinformation (First_Name, Last_Name, 
                 Address1, Address2, City, State, Zipcode)
-                VALUES($1, $2, $3, $4, $5, $6, %7)`, [
+                VALUES($1, $2, $3, $4, $5, $6, $7)`, [
                     profileInfo.firstName,
                     profileInfo.lastName,
                     profileInfo.addressOne,
                     profileInfo.addressTwo,
                     profileInfo.City,
                     profileInfo.State,
-                    profileInfo.ZipCode,
+                    profileInfo.Zipcode,
                 ]
             );
             res.send('Profile info is added to the database.');
     } } catch (err) {
+        // console.log("Something went wrong here");
         console.error(err.message);
     }
 });
