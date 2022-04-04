@@ -13,9 +13,10 @@ router.post('/', async (req, res) => {
 
         validate(profileInfo);
 
-        if (validate(profileInfo)){
+        if (validateIfEmpty(profileInfo)){
             const query = await pool.query(
-                `INSERT INTO clientinformation (First_Name, Last_Name, Address1, Address2, City, State, Zipcode)
+                `INSERT INTO clientinformation (First_Name, Last_Name,
+                Address1, Address2, City, State, Zipcode)
                 VALUES($1, $2, $3, $4, $5, $6, %7)`, [
                     profileInfo.firstName,
                     profileInfo.lastName,
@@ -44,11 +45,11 @@ validate = (method) => {
     }
   }
 
-//   validateIfEmpty = (profileInfo) => {
-//     if(!(profileInfo.name  && quoteInfo.date != '')){
-//         return false;
-//     }
-//     return true; 
-// }
+  validateIfEmpty = (profileInfo) => {
+    if(!(profileInfo.firstName  && profileInfo.lastName != '')){
+        return false;
+    }
+    return true;
+}
 
 module.exports = router;
