@@ -1,27 +1,35 @@
 import React from 'react';
 import LoginForm from './LoginForm';
 import Checks from "../components/forms/Checks";
+import axios from "axios";
 
 function Login() {
-    const adminUser = {
-        username: "administrator",
-        password: "admin123"
-    }
+    // const adminUser = {
+    //     username: "administrator",
+    //     password: "admin123"
+    // }
+    var listUsers = [
+        {username: "administrator", password: "admin123"},
+        {username: "user1", password: "user1234"}
+
+    ]
     const [user, setUser] = React.useState({username: "", password: ""});
     const [error, setError] = React.useState("");
 
-    const Login = details => {
+    const Login = async details => {
         console.log(details);
         if (Checks.checkLoginInput(details.username, details.password)) {
-            if (details.username === adminUser.username && details.password === adminUser.password) {
-                console.log("Login Successful");
-                setUser({
-                    username: details.username,
-                    password: details.password
-                });
-            } else {
-                setError("Username or Password does not exist");
-            }
+            await axios.post('http://localhost:9000/login', {
+                username: user.username, 
+                password: user.password
+            }).then((response) => {
+                console.log("Log data sent to server");
+            });
+            console.log("Login Successful");
+            setUser({
+                username: details.username,
+                password: details.password
+            });
         } else {
             setError("Invalid Username or Password");
         }

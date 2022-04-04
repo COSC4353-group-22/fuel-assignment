@@ -1,48 +1,64 @@
 var express = require("express");
 var router = express.Router();
+const pool = require("../db/queries");
+const { body } = require('express-validator')
+const bcrypt = require("bcrypt");
 
 router.post('/', async (req, res) => {
     try {
-        const user = req.body; 
+        const data = await pool.query(`SELECT * FROM UserCredentials WHERE username = $1 AND password = $2;`, [username, password]); //Checking if user already exists
+        const user = data.rows;
+        console.log(data);
         console.log(user);
         console.log("Received login form data"); 
-        
-        validate(user);
-        
-        //CODE FOR SENDING TO DATABASE ONCE IT IS IMPLEMENTED
-        /*const query = await pool.query(
-            `INSERT INTO quote (date, gallons, gallonPrice, total)
-            VALUES($1, $2, $3, $4)`, [
-                quote.date,
-                quote.gallons,
-                quote.gallonPrice,
-                quote.total
-            ]
-        );
-        res.send('Quote info is added to the database.');*/
-  
+
+            if (user.length === 0) {
+                res.status(400).json({
+                error: "User is not registered, Sign Up first",
+                });
+            }
+            else {
+                if (req.username === user.username && req.password === user.password) {
+                    res.status(200).json({
+                    message: "User is logged in",
+                    });
+                }
+                else {
+                    res.send("Incorrect username or password");
+                }
+                // bcrypt.compare(password, user[0].password, (err, result) => { //Comparing the hashed password
+                //     if (err) {
+                //         res.send("Error");
+                //     }
+                //     else if (result === true) { //Checking if credentials match
+                //         res.send("Login Successful");
+                //     } 
+                //     else {
+                //         res.send("Incorrect password");
+                //     }
+                // });
+            }
     } catch (err) {
         console.error(err.message);
     }
 });
 
-router.get("/", (req, res, next) => {
-    res.send([//temporary values for now - will connect to database in following assignments
-        { username: "administrator", password: "admin123" },
-        { username: "user", password: "user123" }
-    ])
-});
+// router.get('/', async (req, res) => {
+//     try {
+//         const query = await pool.query("SELECT * FROM UserCredentials;");
+//         console.log(query.rows[1]);
+//         res.json(query.rows[1]);
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
 
-validate = (method) => {
-    switch (method) {
-      case 'user': {
-       return [ 
-          body('username', "incorrect input for user").exists().not().isEmpty(),
-          body('password', 'Invalid pass').exists().not().isEmpty(),
-        ]   
-      }
-    }
-  }
+// router.get("/", (req, res, next) => {
+//     res.send([//temporary values for now - will connect to database in following assignments
+//         { username: "administrator", password: "admin123" },
+//         { username: "user", password: "user123" }
+//     ])
+// });
   
 
 module.exports = router;

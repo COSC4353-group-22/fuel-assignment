@@ -1,59 +1,51 @@
 var express = require("express");
 var router = express.Router();
 const { body } = require('express-validator')
+const pool = require("../db/queries");
+const bcrypt = require("bcrypt");
 
 router.post('/', async (req, res) => {
   try {
       const user = req.body; 
+      const {username, password} = req.body;
       console.log(user);
       console.log("Received register form data"); 
-      
-      validate(user);
-      
-      //CODE FOR SENDING TO DATABASE ONCE IT IS IMPLEMENTED
-      /*const query = await pool.query(
-          `INSERT INTO quote (date, gallons, gallonPrice, total)
-          VALUES($1, $2, $3, $4)`, [
-              quote.date,
-              quote.gallons,
-              quote.gallonPrice,
-              quote.total
-          ]
-      );
-      res.send('Quote info is added to the database.');*/
-
+    
+        const data = await pool.query(`SELECT * FROM UserCredentials WHERE username = $1;`, [username]); //Checking if user already exists
+        const arr = data.rows;
+        if (arr.length !=  0) {
+          console.log("User already exists");
+          return res.send("Email already there, No need to register again.");
+        }
+        else {
+          bcrypt.hash(password, 8, async (err, hash) => {
+            const user  = {
+              username,
+              password: hash,
+            };
+            const query = await pool.query(
+              `INSERT INTO UserCredentials (Username, Password)
+              VALUES($1, $2)`, [
+                  username,
+                  password,
+              ]
+            );
+            res.send("User added to database!");
+          });
+        }
   } catch (err) {
       console.error(err.message);
   }
 });
 
 router.get('/', async (req, res) => {
-  try{
-      res.json({"username": "user"}); //temp value for now
+  try {
+    const data = await pool.query("SELECT * FROM UserCredentials");
+    res.json(data.rows);
   } catch(err) {
       console.error(err.message);
   }
-
-  //CODE FOR RECIEVING FROM DATABASE ONCE IT IS IMPLEMENTED
-  /*try {
-      const query = await pool.query("SELECT address FROM quote WHERE id = ");
-      res.json(query.rows);
-
-  } catch (err) {
-      console.error(err.message);
-  }*/
-}); 
-
-validate = (method) => {
-  switch (method) {
-    case 'user': {
-     return [ 
-        body('username', "incorrect input for user").exists().not().isEmpty(),
-        body('password', 'Invalid pass').exists().not().isEmpty(),
-      ]   
-    }
-  }
-}
+});
 
 
 module.exports = router;

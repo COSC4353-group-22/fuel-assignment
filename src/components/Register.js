@@ -1,14 +1,31 @@
 import axios from "axios";
 import React from 'react'
 import { useState } from "react";
+import Checks from "../components/forms/Checks";
 
 function Register() {
+    const listUsers = [
+        {username: "administrator", password: "admin123"},
+        {username: "user1", password: "user1234"}
+    ];
+    
     const [user, setUser] = useState({username: "", password: ""});
     const [error, setError] = useState("");
-    const [data, setData] = useState(); 
+
+    // const fetchTable = async () => {
+    //     await axios.get(`http://localhost:9000/register`).then((res) => {
+    //       setUser(res.data);
+    //       console.log(res.data);
+    //     }).catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
+    // fetchTable();
 
     const Register = user => {
-        if (user.username != "" && user.password != "") {
+        if (Checks.checkRegisterInput(user.username, user.password)) {
+            console.log(user);
+            //Post to DB
             setUser({
                 username: user.username,
                 password: user.password
@@ -19,18 +36,6 @@ function Register() {
             return false;
         }
     }
-
-    // const fetchUser = async () => {
-    //     await axios.get(`http://localhost:9000/register`).then((res) => {
-    //       setData(res.data.username);
-    //       setData(res.data.password)
-    //       console.log(res.data.username);
-    //       console.log(res.data.password);
-    //     }).catch((err) => {
-    //       console.log(err);
-    //     });
-    // }
-    // fetchUser();
 
     const submitHandler = async(e) => {
         e.preventDefault();
