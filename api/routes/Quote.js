@@ -45,10 +45,10 @@ router.post('/', async (req, res) => {
 
 
 validate2 = (quoteInfo) => {
-    if(!(quoteInfo.gallons > 0  && quoteInfo.date != '')){
-        return false;
+    if(quoteInfo.gallons > 0  && quoteInfo.date != ''){
+        return true;
     }
-    return true; 
+    return false; 
 }
 
 
