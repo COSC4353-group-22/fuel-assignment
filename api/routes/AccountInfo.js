@@ -1,41 +1,32 @@
 var express = require("express");
 var router = express.Router();
+const pool = require("../db/queries");
 const { body } = require('express-validator')
 
-// POST(CREATE): an endpoint that will insert quote data into Database
-//Will be implemented further with database
+// POST(CREATE): an endpoint that will insert data into Database
+// Will be implemented further with database
 router.post('/', async (req, res) => {
     try {
-        // const quoteInfo = req.body;
         const profileInfo = req.body
-        // console.log(quoteInfo);
         console.log(profileInfo)
         console.log("recieved profile info data"); 
-        
+
         validate(profileInfo);
 
-    } catch (err) {
+        if (validate(profileInfo)){
+            const query = await pool.query(
+                `INSERT INTO clientinformation (Full_Name, Address1)
+                VALUES($1, $2)`, [
+                    profileInfo.firstName,
+                    profileInfo.lastName,
+                    profileInfo.addressOne,
+                ]
+            );
+            res.send('Profile info is added to the database.');
+    } } catch (err) {
         console.error(err.message);
     }
 });
-
-// GET(READ): an endpoint to get all passenger info from the API.
-router.get('/', async (req, res) => {
-    try{
-        res.json({"address": "1313 Cornelia Street"}); //temp value for now
-    } catch(err) {
-        console.error(err.message);
-    }
-
-    //CODE FOR RECIEVING FROM DATABASE ONCE IT IS IMPLEMENTED
-    /*try {
-        const query = await pool.query("SELECT address FROM quote WHERE id = ");
-        res.json(query.rows);
-
-    } catch (err) {
-        console.error(err.message);
-    }*/
-}); 
 
 //validates input for Quote form 
 validate = (method) => {
@@ -48,5 +39,12 @@ validate = (method) => {
       }
     }
   }
+
+//   validateIfEmpty = (profileInfo) => {
+//     if(!(profileInfo.name  && quoteInfo.date != '')){
+//         return false;
+//     }
+//     return true; 
+// }
 
 module.exports = router;
