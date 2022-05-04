@@ -1,64 +1,50 @@
 var express = require("express");
 var router = express.Router();
-const pool = require("../db/queries");
+const db = require("../db/queries");
 const { body } = require('express-validator')
 const bcrypt = require("bcrypt");
 
-router.post('/', async (req, res) => {
-    try {
-        const data = await pool.query(`SELECT * FROM UserCredentials WHERE username = $1 AND password = $2;`, [username, password]); //Checking if user already exists
-        const user = data.rows;
-        console.log(data);
-        console.log(user);
-        console.log("Received login form data"); 
+//https://dev.to/shreshthgoyal/user-authorization-in-nodejs-using-postgresql-4gl
 
-            if (user.length === 0) {
-                res.status(400).json({
-                error: "User is not registered, Sign Up first",
-                });
-            }
-            else {
-                if (req.username === user.username && req.password === user.password) {
-                    res.status(200).json({
-                    message: "User is logged in",
-                    });
+//https://flaviocopes.com/javascript-bcrypt/
+
+//https://heynode.com/blog/2020-04/salt-and-hash-passwords-bcrypt/
+
+router.post('/', async (req, result) => {
+    try {
+        const { username, password } = req.body;
+        // query statement to store hash
+        const statement = await db.query(`SELECT password FROM UserCredentials WHERE username = $1;`, [username]); //Checking if user already exists
+        const arr = statement.rows;
+
+        if (arr.length <=  0) {
+            console.log("Username not found");
+            result.status(404).send("Username not found");
+        }
+        else {
+            var hash = statement.rows[0].password;
+            // compare hash and password
+            bcrypt.compare(password, hash, function(err, bresult) {
+                // execute code to test for access and login
+                if (bresult) {
+                    result.status(200).send("Access Granted!");
+                    console.log("Access Granted!");
                 }
-                else {
-                    res.send("Incorrect username or password");
-                }
-                // bcrypt.compare(password, user[0].password, (err, result) => { //Comparing the hashed password
-                //     if (err) {
-                //         res.send("Error");
-                //     }
-                //     else if (result === true) { //Checking if credentials match
-                //         res.send("Login Successful");
-                //     } 
-                //     else {
-                //         res.send("Incorrect password");
-                //     }
-                // });
-            }
+            });
+        }
     } catch (err) {
         console.error(err.message);
     }
 });
 
-// router.get('/', async (req, res) => {
-//     try {
-//         const query = await pool.query("SELECT * FROM UserCredentials;");
-//         console.log(query.rows[1]);
-//         res.json(query.rows[1]);
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// });
-
-// router.get("/", (req, res, next) => {
-//     res.send([//temporary values for now - will connect to database in following assignments
-//         { username: "administrator", password: "admin123" },
-//         { username: "user", password: "user123" }
-//     ])
-// });
-  
+router.get('/', async (req, res) => {
+    try {
+        const query = await db.query("SELECT * FROM UserCredentials;");
+        console.log(query.rows[1]);
+        res.json(query.rows[1]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 module.exports = router;
