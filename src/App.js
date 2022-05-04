@@ -10,18 +10,20 @@ import ErrorPage from './components/ErrorPage';
 import Register from './components/Register';
 import QuoteHistory from './components/QuoteHistory';
 import FuelQuote from "./components/FuelQuote";
+import AccountInfoSaved from './components/AccountInfoSaved';
+import NavBarSemi from './components/NavBarSemi';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <NavBar />
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register   />} />
-        <Route path="/profile" element={<AccountInfo />} />
+        <Route path="/profile" element={<AccountInfoSaved />} />
+        <Route path="/profile/edit" element={<AccountInfo />} />
         <Route path="*" element={<ErrorPage />} />
         <Route path="/history" element={<QuoteHistory />}></Route>
         <Route path="/quote" element={<FuelQuote />}></Route>

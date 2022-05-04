@@ -14,6 +14,7 @@ var testAPIRouter = require("./routes/testAPI");
 var QuoteHistoryRoute = require("./routes/QuoteHistory")
 var QuoteRouter = require("./routes/Quote")
 var AccountRouter = require("./routes/AccountInfo")
+var AccountInfoSavedRouter = require("./routes/AccountInfoSaved")
 
 
 var app = express();
@@ -37,6 +38,7 @@ app.use("/testAPI", testAPIRouter);
 app.use("/history", QuoteHistoryRoute);
 app.use("/quote", QuoteRouter);
 app.use("/AccountInfo", AccountRouter);
+app.use("/AccountInfoSaved", AccountInfoSavedRouter);
 
 
 // catch 404 and forward to error handler

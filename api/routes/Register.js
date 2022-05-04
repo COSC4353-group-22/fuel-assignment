@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
         const arr = data.rows;
         if (arr.length !=  0) {
           console.log("User already exists");
-          res.status(300).send("Email already there, No need to register again.");
+          res.status(202).send("Email already there, No need to register again.");
         }
         else {
           bcrypt.hash(password, saltRounds, async (err, hash) => {

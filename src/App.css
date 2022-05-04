@@ -54,12 +54,72 @@
   outline: none;
 }
 
+.homepage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #ffffff;
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.state-select {
+  font-size: 1.05rem;
+}
+
+.state-label {
+  font-size: .9rem;
+  text-align: center;
+}
+
+.submit-form {
+  padding: 20px;
+  text-align: center;
+}
+
 .login {
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #53565A;
+  background-color: #fff;
+}
+
+.welcome {
+  position: absolute;
+  top: 8%;
+  right: 2%;
+}
+
+.edit-info {
+  text-align: center;
+  margin-top: -100%;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
 }
 
 .form-login {

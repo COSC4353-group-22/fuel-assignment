@@ -5,7 +5,7 @@ function checkUsernameCharacters(input) {
   }
   
   function checkPasswordCharacters(input) {
-    return /^[a-zA-Z0-9!@#$%^&*()]{8,}$/.test(input);
+    return /^[a-zA-Z0-9!@#$%^&*()]{8,30}$/.test(input);
   }
   
   function checkRegisterInput(username, password) {
