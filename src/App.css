@@ -111,6 +111,12 @@
   margin-top: -100%;
 }
 
+.info-display {
+  padding: 10%;
+  align-items: left;
+  justify-content: left;
+}
+
 .button {
   background-color: #4CAF50; /* Green */
   border: none;
