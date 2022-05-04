@@ -3,6 +3,7 @@ import React from 'react'
 import { useState } from "react";
 import Checks from "../components/forms/Checks";
 import { Link } from 'react-router-dom';
+import NavBarSemi from './NavBarSemi';
 
 function Register() {
     const [user, setUser] = useState({username: "", password: ""});
@@ -54,23 +55,26 @@ function Register() {
     }
 
     return (
-        <div className='register'>
-            <form className="form-login" onSubmit={submitHandler}>
-                <div className='form-inner'>
-                    <h2>Register</h2>
-                    {(error != "" ) ? (<div className='error'>{error}</div>) : ""}
-                    <div className='form-group'>
-                        <label>Username</label>
-                        <input type='text' className="form-input" name="username" id="username" onChange={e => setUser({...user, username:e.target.value})} value={user.username} />
+        <div>
+            <NavBarSemi />
+            <div className='register'>
+                <form className="form-login" onSubmit={submitHandler}>
+                    <div className='form-inner'>
+                        <h2>Register</h2>
+                        {(error != "" ) ? (<div className='error'>{error}</div>) : ""}
+                        <div className='form-group'>
+                            <label>Username</label>
+                            <input type='text' className="form-input" name="username" id="username" onChange={e => setUser({...user, username:e.target.value})} value={user.username} />
+                        </div>
+                        <div className='form-group'>
+                            <label>Password</label>
+                            <input type='password' className="form-input" name="password" id="password" onChange={e => setUser({...user, password:e.target.value})} value={user.password}/>
+                        </div>
+                        <input type="submit" className="form-input" value="Register" />
+                        <Link to="/login" className='button-register'>Have an account? Login</Link>
                     </div>
-                    <div className='form-group'>
-                        <label>Password</label>
-                        <input type='password' className="form-input" name="password" id="password" onChange={e => setUser({...user, password:e.target.value})} value={user.password}/>
-                    </div>
-                    <input type="submit" className="form-input" value="Register" />
-                    <Link to="/login" className='button-register'>Have an account? Login</Link>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     );
 }
