@@ -6,18 +6,6 @@ import { useEffect, useState } from "react";
 
 const QuoteHistory = () => { 
     const [user, setUser] = useState({ username: "", password: "" });
-    const [error, setError] = useState("");
-
-    const [profile, setProfile] = useState({
-        "username": "",
-        "firstName":"",
-        "lastName":"",
-        "addressOne":"",
-        "addressTwo":"",
-        "City":"",
-        "Zipcode": "",
-        "State":"",
-    });
 
     useEffect(() => {
         const loggedInUser = sessionStorage.getItem("user");
@@ -31,8 +19,10 @@ const QuoteHistory = () => {
 	const [quotes, setQuotes] = useState([]);
 
     const fetchTable = async () => {
-        await axios.get(`http://localhost:9000/history`).then((res) => {
+        console.log(user)
+        await axios.get(`http://localhost:9000/history`, {params: {username: user.username}}).then((res) => {
           setQuotes(res.data);
+          console.log("data:")
           console.log(res.data);
         }).catch((err) => {
           console.log(err);

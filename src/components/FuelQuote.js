@@ -8,17 +8,6 @@ function FuelQuote()  {
     const [user, setUser] = useState({ username: "", password: "" });
     const [error, setError] = useState("");
 
-    const [profile, setProfile] = useState({
-        "username": "",
-        "firstName":"",
-        "lastName":"",
-        "addressOne":"",
-        "addressTwo":"",
-        "City":"",
-        "Zipcode": "",
-        "State":"",
-    });
-
     useEffect(() => {
         const loggedInUser = sessionStorage.getItem("user");
         if (loggedInUser) {
@@ -28,45 +17,94 @@ function FuelQuote()  {
         }
     }, []);
 
+    //hannah's code from here 
     const [quote, setQuote] = useState({});
-    const [data, setData] = useState(); 
+    const [price, setPrice] = useState({});
+    const [data, setData] = useState();
+     
+
+    const fetchAddress = async () => {
+        await axios.get(`http://localhost:9000/quote`).then((res) => {
+          setData(res.data.address1);
+          console.log(res.data.address1);
+        }).catch((err) => {
+          console.log(err);
+        });
+    }
+    fetchAddress();
 
     const handleInputChangeGallons = (event) => {
         console.log(event.target.value)
         let q = {
+            "send": 0,
+            "user": user.username, 
             "gallons": event.target.value, 
-            "date": quote.date
+            "date": quote.date,
+            "address": data
         }
         setQuote(q);
         console.log("input change:", q);
     }
 
     const handleInputChangeDate = (event) => {
-        console.log(event.target.value)
+        console.log("address = " +  data);
         let q = {
+            "send": 0,
+            "user": user.username,
             "gallons": quote.gallons,
             "date": event.target.value,
+            "address": data
         }
         setQuote(q);
         console.log("input change:", q);
     }
 
-    const fetchAddress = async () => {
-        await axios.get(`http://localhost:9000/quote`).then((res) => {
-          setData(res.data.address);
-          console.log(res.data.address);
-        }).catch((err) => {
-          console.log(err);
-        });
+    const handlePriceSubmit = async(event) => {
+        event.preventDefault(); 
+
+        let q = {
+            "send": 0,
+            "user": user.username,
+            "gallons": quote.gallons,
+            "date": quote.date,
+            "address": data
+        }
+        setQuote(q);
+        console.log(quote);
+        
+        await axios.post(`http://localhost:9000/quote`, quote).then((res) => {
+            console.log("form data sent to server"); 
+            let p = {
+                "gallonPrice": res.data.gallonPrice, 
+                "total": res.data.total
+            }
+            setPrice(p);
+		}).catch((err) => {
+			console.log(err);
+		});
     }
-    fetchAddress(); 
     
     const handleSubmit = async(event) => {
         event.preventDefault();
-        console.log(quote);
+        console.log("main submit")
+
+        let q = {
+            "send": 1,
+            "user": user.username,
+            "gallons": quote.gallons,
+            "date": quote.date,
+            "address": data
+        }
+        setQuote(q);
+        console.log(quote)
 
         await axios.post(`http://localhost:9000/quote`, quote).then((res) => {
             console.log("form data sent to server"); 
+            let p = {
+                "gallonPrice": res.data.gallonPrice, 
+                "total": res.data.total
+            }
+            setPrice(p);
 		}).catch((err) => {
 			console.log(err);
 		});
@@ -94,11 +132,12 @@ function FuelQuote()  {
                     </label>
                     <br />
                     <label>
-                    Suggested Price: <input name="gallonPrice" id="p" type="number" value={quote.gallonPrice} />
+                    Suggested Price: <input name="gallonPrice" id="p" type="number" value={price.gallonPrice} />
+                    <button onClick={handlePriceSubmit}>Get Quote</button>
                     </label>
                     <br />
                     <label>
-                        Total Price: <output name="total" for="g p"> 0.0$ </output>
+                        Total Price: <input name="total" id="p" type="number" value={price.total} readOnly/>
                     </label><br />
                     <button type="submit">Confirm Quote</button>
                 </form>
